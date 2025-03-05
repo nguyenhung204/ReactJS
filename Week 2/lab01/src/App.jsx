@@ -9,13 +9,13 @@ import Todo from './components/todo/todo'
 function App() {
 
   return (
-    <>
+    <div>
       <Logname/>
       <Calculator/>
       <Todo/>
       <Categoty/>
       <Sum/>
-    </>
+    </div>
   )
 }
 

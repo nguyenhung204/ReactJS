@@ -1,0 +1,44 @@
+.card {
+    width: 300px;
+    height: 330px;
+    overflow: hidden;
+    background: white;
+    box-shadow: 1px 2px 5px rgba(0, 0, 0, 0.1);
+    border-radius: 12px;
+  }
+  
+  
+  .card-image img {
+    width: 100%;
+    height: auto;
+  }
+  
+  .card-content {
+    padding: 10px 20px;
+  }
+  
+  .card-title {
+    font-size: 16px;
+    font-weight: bold;
+    margin: 5px 0;
+  }
+  
+  .card-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 8px;
+  }
+  
+  .card-time {
+    font-size: 12px;
+    color: #ff4081;
+  }
+  
+  .bookmark-btn {
+    background: none;
+    border: none;
+    cursor: pointer;
+    font-size: 16px;
+  }
+  

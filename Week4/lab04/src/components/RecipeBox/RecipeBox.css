@@ -1,0 +1,73 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+.container{
+    width: 100%;
+    padding: 0 3rem;
+    box-sizing: border-box;
+}
+.title{
+    font-family: Lora; 
+    font-size: 32px; 
+    line-height: 48px; 
+    font-weight: 700; 
+    color: #171A1FFF;
+}
+.profile-container{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 2rem;
+}
+.profile-container .profile-info .description {
+    font-family: Poppins; /* Heading */
+    font-size: 16px; 
+    line-height: 26px; 
+    font-weight: 400; 
+    color: #424955FF;
+}
+.subscribers {
+    font-family: Manrope; 
+    font-size: 16px; 
+    line-height: 26px; 
+    font-weight: 400; 
+    color: #F44B87FF;
+}
+.share-btn {
+    height: 44px; 
+    padding: 0 16px; 
+    font-family: Manrope; 
+    font-size: 16px; 
+    line-height: 26px; 
+    font-weight: 400; 
+    color: #FFFFFFFF;
+    background: #F44B87FF; 
+    opacity: 1; 
+    border: none; 
+    border-radius: 12px; 
+    gap: 6px;
+}
+.subscribe-section{
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+}
+.tabs {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-family: Manrope; 
+    font-size: 14px; 
+    line-height: 22px; 
+    font-weight: 400; 
+    height: 3rem;
+    
+}
+.tab.active {
+    color: #B30B46FF;
+}
+.recipe-card{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px 10px ;
+    margin-bottom: 4rem;
+}

@@ -1,0 +1,85 @@
+
+.nav-bar {
+    width: 100%;
+    height: 80px;
+    background: #FFFFFFFF;
+    border-radius: 0px;
+    box-shadow: 0px 0px 1px #171a1f26, 0px 0px 2px #171a1f33;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-family: Manrope;
+}
+.menu>ul{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+}
+
+.menu>ul>li {
+    list-style: none;
+}
+
+.menu>ul>li>a {
+    text-decoration: none;
+    color: #171a1f;
+    font-size: 14px;
+    font-weight: 400;
+}
+.textbox input {
+    width: 374px;
+    height: 44px;
+    padding-left: 44px;
+    padding-right: 16px;
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 400;
+    background: #F3F4F6FF;
+    border-radius: 12px;
+    border-width: 0px;
+    outline: none;
+}
+
+.button {
+    height: 44px;
+    padding: 0 16px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+    line-height: 26px;
+    font-weight: 400;
+    color: #F44B87FF;
+    background: #FEF0F5FF;
+    opacity: 1;
+    border: none;
+    border-radius: 12px;
+    gap: 6px;
+}
+
+.button .icon {
+    width: 20px;
+    height: 20px;
+    fill: #F44B87FF;
+}
+
+.button:hover {
+    color: #F44B87FF;
+    background: #FDDCE8FF;
+}
+
+.button:hover:active {
+    color: #F44B87FF;
+    background: #FBC8DAFF;
+}
+
+.button:disabled {
+    opacity: 0.4;
+}
+.logo img {
+    width: 154px;
+    height: 50px;
+    object-fit: cover;
+}

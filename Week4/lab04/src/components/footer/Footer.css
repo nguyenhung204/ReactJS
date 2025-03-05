@@ -1,0 +1,115 @@
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&display=swap');
+.footer {
+    height: 380px;
+    background: #1D2128FF;
+    border-radius: 6px;
+    display: flex;
+    color: #FFFFFFFF;
+    padding: 3rem;
+    justify-content: space-between;
+}
+
+.footer li {
+    list-style: none;
+}
+.footer a{
+    text-decoration: none;
+    color: #DEE1E6FF;
+}
+
+.inf1 {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.inf1 span {
+    font-family: Poppins;
+    font-size: 11px;
+    line-height: 18px;
+    font-weight: 400;
+    color: #DEE1E6FF;
+}
+
+.inf1 img {
+    width: 120px;
+    height: 40px;
+    object-fit: contain;
+    transform: translateY(40%);
+}
+
+.text {
+    width: 507px;
+    font-family: Poppins;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 400;
+    color: #DEE1E6FF;
+}
+
+.email input {
+    width: 396px;
+    height: 36px;
+    padding-left: 12px;
+    padding-right: 12px;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 400;
+    background: #FFFFFFFF;
+    border-radius: 6px;
+    border-width: 1px;
+    border-color: #BCC1CAFF;
+    border-style: solid;
+    outline: none;
+}
+
+.send {
+    height: 36px;
+    padding: 0 12px;
+    font-family: Manrope;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 400;
+    color: #FFFFFFFF;
+    background: #F44B87FF;
+    opacity: 1;
+    border: none;
+    border-radius: 6px;
+}
+
+.send:hover {
+    color: #FFFFFFFF;
+    background: #F0105EFF;
+}
+
+.footer h3 {
+    font-family: Poppins;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 700;
+}
+
+.footer .contain {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.inf2 {
+    display: flex;
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+.footer .list {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.list li {
+    font-family: Poppins;
+    font-size: 14px;
+    line-height: 22px;
+    font-weight: 400;
+}
