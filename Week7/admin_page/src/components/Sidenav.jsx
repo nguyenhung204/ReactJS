@@ -1,7 +1,7 @@
 import { NavLink } from 'react-router-dom';
 import logo from '../assets/logo.png';
 import image from '../assets/image.png';
-function Sidebar() {
+function Sidenav() {
     return (
 
 
@@ -43,4 +43,4 @@ function Sidebar() {
     )
 }
 
-export default Sidebar;
+export default Sidenav;
