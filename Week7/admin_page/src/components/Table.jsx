@@ -93,7 +93,6 @@ function Table({ onAddUser }) {
     }
   }
 
-  // Expose the addUser function via useEffect
   useEffect(() => {
     if (onAddUser) {
       onAddUser(openAddModal);
@@ -109,18 +108,75 @@ function Table({ onAddUser }) {
       </div>
     );
   };
+  const statusBodyTemplate = (rowData) => {
+    const statusClasses = {
+      "New": "bg-blue-100 text-blue-800",
+      "Pending": "bg-yellow-100 text-yellow-800",
+      "Completed": "bg-green-100 text-green-800",
+    };
+
+    return (
+      <span className={`px-3 py-1 rounded-full text-xs font-semibold ${statusClasses[rowData.status] || "bg-gray-100 text-gray-800"}`}>
+        {rowData.status}
+      </span>
+    );
+  };
 
   return (
-    <div className="card">
-      <DataTable selectionMode='checkbox' selection={selectedCustomers} onSelectionChange={(e) => setSelectedCustomers(e.value)} rows={6} rowsPerPageOptions={[5, 10, 25, 50]} paginator value={customers} stripedRows>
-        <Column className='checkbox' selectionMode="multiple" headerStyle={{ width: '3rem' }} />
-        <Column field="name" header="Customer Name" />
-        <Column field="company" header="Company" />
-        <Column field="amount" header="Order Value" />
-        <Column field="date" header="Order Date" />
-        <Column field="status" header="Status" />
-        <Column body={editButtonTemplate} style={{ width: '4rem' }} />
-      </DataTable>
+    <div className="">
+    <DataTable
+      value={customers}
+      selection={selectedCustomers}
+      onSelectionChange={(e) => setSelectedCustomers(e.value)}
+      selectionMode="checkbox"
+      paginator
+      rows={5}
+      className="border border-gray-300 rounded-lg"
+      emptyMessage="No customers found"
+    >
+      <Column
+        selectionMode="multiple"
+        headerStyle={{ width: '3rem' }}
+        className="border-b border-gray-200"
+      />
+      <Column
+        field="name"
+        header="Customer Name"
+        className="border-b border-gray-200 px-4 py-2"
+        headerClassName="bg-gray-50 text-gray-700 font-medium px-4 py-2"
+      />
+      <Column
+        field="company"
+        header="Company"
+        className="border-b border-gray-200 px-4 py-2"
+        headerClassName="bg-gray-50 text-gray-700 font-medium px-4 py-2"
+      />
+      <Column
+        field="amount"
+        header="Order Value"
+        className="border-b border-gray-200 px-4 py-2"
+        headerClassName="bg-gray-50 text-gray-700 font-medium px-4 py-2"
+      />
+      <Column
+        field="date"
+        header="Order Date"
+        className="border-b border-gray-200 px-4 py-2"
+        headerClassName="bg-gray-50 text-gray-700 font-medium px-4 py-2"
+      />
+      <Column
+        field="status"
+        header="Status"
+        body={statusBodyTemplate}
+        className="border-b border-gray-200 px-4 py-2"
+        headerClassName="bg-gray-50 text-gray-700 font-medium px-4 py-2"
+      />
+      <Column
+        body={editButtonTemplate}
+        style={{ width: '4rem' }}
+        className="border-b border-gray-200"
+        headerClassName="bg-gray-50"
+      />
+    </DataTable>
       
       {/* Edit Modal */}
       <Modal

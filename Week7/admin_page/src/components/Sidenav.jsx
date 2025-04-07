@@ -11,7 +11,7 @@ function Sidenav() {
         <div className="flex justify-between flex-col h-full">
             <div>
                 <div className="sidebar-header">
-                    <img src={logo} alt="Logo" className="logo" />
+                    <img src={logo} alt="Logo" className="mb-5" />
                 </div>
                 <nav className="sidebar-nav">
                     <ul className="space-y-2">
