@@ -2,7 +2,7 @@ import { useEffect, useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
-function Modal({ visible, customer, onHide, onSave }) {
+function Modal({ visible, customer, onHide, onSave, title = "Edit Customer" }) {
   const [editingCustomer, setEditingCustomer] = useState({ ...customer });
   const modalRef = useRef(null);
 
@@ -41,7 +41,7 @@ function Modal({ visible, customer, onHide, onSave }) {
         >
           <div className="flex justify-between items-center bg-[#F0F6FF] px-6 py-4 border-b">
             <h3 className="text-lg font-medium text-gray-900">
-              Edit Customer
+              {title}
             </h3>
             <button
               onClick={onHide}
