@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes, faSave } from '@fortawesome/free-solid-svg-icons';
+import { faTimes } from '@fortawesome/free-solid-svg-icons';
 
 function Modal({ visible, customer, onHide, onSave }) {
   const [editingCustomer, setEditingCustomer] = useState({ ...customer });
@@ -11,15 +11,7 @@ function Modal({ visible, customer, onHide, onSave }) {
       setEditingCustomer({ ...customer });
     }
   }, [customer]);
-
-  useEffect(() => {
-    if (visible) {
-      setTimeout(() => {
-        modalRef.current?.focus();
-      }, 100);
-    }
-  }, [visible]);
-
+  
   const handleInputChange = (e, field) => {
     setEditingCustomer({
       ...editingCustomer,
@@ -36,7 +28,7 @@ function Modal({ visible, customer, onHide, onSave }) {
   return (
     <>
       <div 
-        className="fixed inset-0 bg-inherit z-40 transition-opacity"
+        className="fixed inset-0 bg-inherit z-10 shadow-lg opacity-50"
         onClick={onHide}
       ></div>
       <div 
@@ -47,13 +39,13 @@ function Modal({ visible, customer, onHide, onSave }) {
           className="bg-white rounded-lg shadow-xl w-11/12 max-w-2xl mx-auto overflow-hidden focus:outline-none"
           tabIndex={-1}
         >
-          <div className="flex justify-between items-center bg-gray-100 px-6 py-4 border-b">
+          <div className="flex justify-between items-center bg-[#F0F6FF] px-6 py-4 border-b">
             <h3 className="text-lg font-medium text-gray-900">
               Edit Customer
             </h3>
             <button
               onClick={onHide}
-              className="text-gray-500 hover:text-gray-700 transition-colors"
+              className="text-gray-500 hover:text-[#F44B87FF] transition-colors"
               aria-label="Close modal"
             >
               <FontAwesomeIcon icon={faTimes} />
@@ -71,7 +63,7 @@ function Modal({ visible, customer, onHide, onSave }) {
                     id="name"
                     value={editingCustomer.name || ''}
                     onChange={(e) => handleInputChange(e, 'name')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2B80FF] focus:border-[#2B80FF]"
                   />
                 </div>
                 
@@ -84,7 +76,7 @@ function Modal({ visible, customer, onHide, onSave }) {
                     id="company"
                     value={editingCustomer.company || ''}
                     onChange={(e) => handleInputChange(e, 'company')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2B80FF] focus:border-[#2B80FF]"
                   />
                 </div>
                 
@@ -97,7 +89,7 @@ function Modal({ visible, customer, onHide, onSave }) {
                     id="amount"
                     value={editingCustomer.amount || ''}
                     onChange={(e) => handleInputChange(e, 'amount')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2B80FF] focus:border-[#2B80FF]"
                   />
                 </div>
                 
@@ -110,14 +102,14 @@ function Modal({ visible, customer, onHide, onSave }) {
                     id="status"
                     value={editingCustomer.status || ''}
                     onChange={(e) => handleInputChange(e, 'status')}
-                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-blue-500 focus:border-blue-500"
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm focus:outline-none focus:ring-[#2B80FF] focus:border-[#2B80FF]"
                   />
                 </div>
               </div>
             )}
           </div>
         
-          <div className="bg-gray-100 px-6 py-4 flex justify-end space-x-3">
+          <div className="bg-[#F0F6FF] px-6 py-4 flex justify-end space-x-3">
             <button
               onClick={onHide}
               className="px-4 py-2 bg-gray-200 text-gray-800 rounded hover:bg-gray-300 transition-colors"
@@ -126,9 +118,8 @@ function Modal({ visible, customer, onHide, onSave }) {
             </button>
             <button
               onClick={saveCustomer}
-              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700 transition-colors flex items-center gap-2"
+              className="px-4 py-2 bg-[#F44B87FF] text-white rounded hover:bg-[#e03f77] transition-colors flex items-center gap-2"
             >
-              <FontAwesomeIcon icon={faSave} />
               Save
             </button>
           </div>
