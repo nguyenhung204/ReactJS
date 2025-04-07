@@ -1,4 +1,9 @@
 @import "tailwindcss";
+
 .card svg {
-display: none;
+  display: none;
+}
+
+#root{
+  overflow: hidden;
 }

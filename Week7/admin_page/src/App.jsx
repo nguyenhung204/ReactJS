@@ -3,32 +3,39 @@ import Sidebar from './components/Sidebar'
 import Header from './components/Header'
 import Table from './components/Table'
 import Tags from './components/Tags'
+import Project from './pages/Project'
+import Teams from './pages/Teams'
+import Analytics from './pages/Analytics'
+import Messages from './pages/Messages'
+import Integrations from './pages/Integrations'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import Dashboard from './pages/Dashboard'
 
 
 function App() {
 
   return (
     <>
-      <div className="container-grid">
-        <aside className="sidebar">
-          <Sidebar />
-        </aside>
-        <div className="main-content">
-          <header className="header">
-            <Header />
-          </header>
-          <main className="dashboard">
-            <div className="overview">
-              <h1>Overview</h1>
-              <Tags/>
-            </div>
-            <div className="detail-report">
-              <h1>Detail Report</h1>
-              <Table />
-            </div>
-          </main>
+      <BrowserRouter>
+        <div className="container-grid">
+          <aside className="sidebar  h-[100vh]">
+            <Sidebar />
+          </aside>
+          <div className="main-content">
+            <header className="header">
+              <Header />
+            </header>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/project" element={<Project />} />
+              <Route path="/team" element={<Teams />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/integrations" element={<Integrations />} />
+            </Routes>
+          </div>
         </div>
-      </div>
+      </BrowserRouter>
     </>
   )
 }

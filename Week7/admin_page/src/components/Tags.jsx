@@ -14,7 +14,6 @@ function Tags(){
                     <span className="tag-name">{tag.title}</span>
                     <h2 className="tag-value">{tag.value}</h2>
                     <span className="tag-unit">{tag.change} period of change</span>
-
                 </div>
             ))}
         </div>
