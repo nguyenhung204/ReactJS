@@ -41,7 +41,6 @@ function Modal({ visible, customer, onHide, onSave }) {
       ></div>
       <div 
         className="fixed inset-0 z-50 flex items-center justify-center"
-        onKeyDown={handleKeyDown}
       >
         <div 
           ref={modalRef}
