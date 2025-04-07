@@ -1,9 +1,9 @@
 import './App.css'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
-import TotalTags from './components/TotalTag'
-import DataTable from './components/DataTable'
-import Pagination from './components/Pagination'
+// import Table from './components/Table'
+import Tags from './components/Tags'
+
 
 function App() {
 
@@ -20,13 +20,12 @@ function App() {
           <main className="dashboard">
             <div className="overview">
               <h1>Overview</h1>
-              <TotalTags />
+              <Tags/>
             </div>
             <div className="detail-report">
               <h1>Detail Report</h1>
-              <DataTable />
+              {/* <Table /> */}
             </div>
-            <Pagination />
           </main>
         </div>
       </div>
