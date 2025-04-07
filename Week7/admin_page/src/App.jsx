@@ -1,7 +1,7 @@
 import './App.css'
 import Sidebar from './components/Sidebar'
 import Header from './components/Header'
-// import Table from './components/Table'
+import Table from './components/Table'
 import Tags from './components/Tags'
 
 
@@ -24,7 +24,7 @@ function App() {
             </div>
             <div className="detail-report">
               <h1>Detail Report</h1>
-              {/* <Table /> */}
+              <Table />
             </div>
           </main>
         </div>
