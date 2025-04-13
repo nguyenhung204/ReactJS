@@ -1,5 +1,6 @@
 import Hero from "./components/Hero"
 import Navbar from "./components/Navbar"
+import SummerRecipes from "./components/SummerRecipes"
 
 
 function App() {
@@ -8,6 +9,7 @@ function App() {
       <Navbar />
       <main className="flex-grow">
         <Hero />
+        <SummerRecipes/>
       </main>
     </div>
   )
