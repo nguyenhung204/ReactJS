@@ -11,6 +11,7 @@ import {
   Edit
 } from 'lucide-react';
 import Breadcrumb from './Breadcrumb';
+import EditModal from './EditModal';
 
 const Dashboard = () => {
   const [overviewData, setOverviewData] = useState([]);
@@ -21,6 +22,10 @@ const Dashboard = () => {
   const [tableError, setTableError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
+  const [selectedRows, setSelectedRows] = useState([]);
+  const [selectAllChecked, setSelectAllChecked] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [currentEditItem, setCurrentEditItem] = useState(null);
 
   // Fetch overview data from API
   useEffect(() => {
@@ -90,6 +95,48 @@ const Dashboard = () => {
   // Change page
   const paginate = (pageNumber) => setCurrentPage(pageNumber);
 
+  // Handle row selection
+  const toggleRowSelection = (id) => {
+    setSelectedRows(prev => 
+      prev.includes(id) 
+        ? prev.filter(rowId => rowId !== id) 
+        : [...prev, id]
+    );
+  };
+
+  // Handle select all
+  const toggleSelectAll = () => {
+    if (selectedRows.length === tableData.length) {
+      setSelectedRows([]);
+    } else {
+      setSelectedRows(tableData.map(item => item.id));
+    }
+  };
+
+  // Handle opening the edit modal
+  const handleEditClick = (item) => {
+    setCurrentEditItem(item);
+    setIsModalOpen(true);
+  };
+
+  // Handle saving edited item
+  const handleSaveEdit = (editedItem) => {
+    // Update the item in the table data
+    setTableData(prevData => 
+      prevData.map(item => 
+        item.id === editedItem.id ? editedItem : item
+      )
+    );
+    
+    // In a real application, you would also make an API call here
+    // to update the item on the server
+    console.log("Updated item:", editedItem);
+    
+    // Close the modal
+    setIsModalOpen(false);
+    setCurrentEditItem(null);
+  };
+
   return (
     <>
       {/* Content */}
@@ -115,73 +162,79 @@ const Dashboard = () => {
             </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-              {/* Turnover Card */}
-              <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-sm text-gray-500 mb-1">Turnover</p>
-                    <h3 className="text-2xl font-bold">$92,405</h3>
-                    
-                    <div className="flex items-center mt-2">
-                      <span className="text-green-500 text-sm flex items-center">
-                        <ArrowUp size={14} className="mr-1" />
-                        3.55%
-                      </span>
-                      <span className="text-xs text-gray-400 ml-2">period of change</span>
-                    </div>
-                  </div>
-                  <div className="bg-pink-100 p-3 rounded-full">
-                    <ShoppingCart className="h-5 w-5 text-pink-500" />
-                  </div>
-                </div>
-              </div>
+              {/* Use actual API data for overview cards */}
+              {overviewData.length > 0 ? (
+                // Assuming the API returns an array with the right properties
+                // Map through the API data to display the overview cards
+                overviewData.map((item, index) => {
+                  // Define icons based on the data type
+                  let cardIcon, bgColor, textColor;
+                  switch (item.type?.toLowerCase() || index % 3) {
+                    case 'turnover':
+                    case 0:
+                      cardIcon = <ShoppingCart className="h-5 w-5 text-pink-500" />;
+                      bgColor = 'bg-pink-100';
+                      textColor = 'text-pink-500';
+                      break;
+                    case 'profit':
+                    case 1:
+                      cardIcon = <DollarSign className="h-5 w-5 text-blue-500" />;
+                      bgColor = 'bg-blue-100';
+                      textColor = 'text-blue-500';
+                      break;
+                    case 'customers':
+                    case 2:
+                      cardIcon = <UserPlus className="h-5 w-5 text-green-500" />;
+                      bgColor = 'bg-green-100';
+                      textColor = 'text-green-500';
+                      break;
+                    default:
+                      cardIcon = <ShoppingCart className="h-5 w-5 text-pink-500" />;
+                      bgColor = 'bg-pink-100';
+                      textColor = 'text-pink-500';
+                  }
 
-              {/* Profit Card */}
-              <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-sm text-gray-500 mb-1">Profit</p>
-                    <h3 className="text-2xl font-bold">$32,218</h3>
-                    
-                    <div className="flex items-center mt-2">
-                      <span className="text-green-500 text-sm flex items-center">
-                        <ArrowUp size={14} className="mr-1" />
-                        5.35%
-                      </span>
-                      <span className="text-xs text-gray-400 ml-2">period of change</span>
+                  return (
+                    <div key={index} className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                      <div className="flex justify-between items-start">
+                        <div>
+                          <p className="text-sm text-gray-500 mb-1">{item.title}</p>
+                          <h3 className="text-2xl font-bold">
+                            {item.value}
+                          </h3>
+                          
+                          <div className="flex items-center mt-2">
+                            {item.change ? (
+                              <>
+                                <span className={`${parseFloat(item.change) >= 0 ? 'text-green-500' : 'text-red-500'} text-sm flex items-center`}>
+                                  {parseFloat(item.change) >= 0 ? (
+                                    <ArrowUp size={14} className="mr-1" />
+                                  ) : (
+                                    <ArrowDown size={14} className="mr-1" />
+                                  )}
+                                  {Math.abs(parseFloat(item.change)).toFixed(2)}%
+                                </span>
+                                <span className="text-xs text-gray-400 ml-2">{item.period || "period of change"}</span>
+                              </>
+                            ) : (
+                              <span className="text-xs text-gray-400">No change data</span>
+                            )}
+                          </div>
+                        </div>
+                        <div className={`${bgColor} p-3 rounded-full`}>
+                          {cardIcon}
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                  <div className="bg-blue-100 p-3 rounded-full">
-                    <DollarSign className="h-5 w-5 text-blue-500" />
-                  </div>
-                </div>
-              </div>
-
-              {/* New Customer Card */}
-              <div className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
-                <div className="flex justify-between items-start">
-                  <div>
-                    <p className="text-sm text-gray-500 mb-1">New customer</p>
-                    <h3 className="text-2xl font-bold">298</h3>
-                    
-                    <div className="flex items-center mt-2">
-                      <span className="text-green-500 text-sm flex items-center">
-                        <ArrowUp size={14} className="mr-1" />
-                        6.42%
-                      </span>
-                      <span className="text-xs text-gray-400 ml-2">period of change</span>
+                          );
+                        })
+                      ) : (
+                        <div className="bg-gray-100 p-4 rounded-md text-gray-500">No overview data available</div>
+                      )}
                     </div>
-                  </div>
-                  <div className="bg-green-100 p-3 rounded-full">
-                    <UserPlus className="h-5 w-5 text-green-500" />
-                  </div>
+                  )}
                 </div>
-              </div>
-            </div>
-          )}
-        </div>
 
-        {/* Data Table Section */}
         <div className="bg-white rounded-lg shadow-sm border border-gray-100 p-5">
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold">Detailed report</h2>
@@ -216,7 +269,12 @@ const Dashboard = () => {
                 <thead>
                   <tr className="border-b">
                     <th className="pb-3 px-2 w-10">
-                      <input type="checkbox" className="rounded" />
+                      <input 
+                        type="checkbox" 
+                        className="rounded" 
+                        checked={selectedRows.length === tableData.length && tableData.length > 0} 
+                        onChange={toggleSelectAll} 
+                      />
                     </th>
                     <th className="pb-3 text-left text-xs font-medium text-gray-500 uppercase">
                       Customer Name
@@ -241,7 +299,12 @@ const Dashboard = () => {
                     currentItems.map((item) => (
                       <tr key={item.id} className="hover:bg-gray-50">
                         <td className="py-3 px-2">
-                          <input type="checkbox" className="rounded" />
+                          <input 
+                            type="checkbox" 
+                            className="rounded" 
+                            checked={selectedRows.includes(item.id)} 
+                            onChange={() => toggleRowSelection(item.id)} 
+                          />
                         </td>
                         <td className="py-3">
                           <div className="flex items-center">
@@ -258,15 +321,18 @@ const Dashboard = () => {
                           </div>
                         </td>
                         <td className="py-3">{item.company}</td>
-                        <td className="py-3">${item.orderValue || item.value}</td>
-                        <td className="py-3">{item.orderDate || item.date}</td>
+                        <td className="py-3">{item.amount}</td>
+                        <td className="py-3">{item.date}</td>
                         <td className="py-3">
                           <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusClass(item.status)}`}>
                             {item.status}
                           </span>
                         </td>
                         <td className="py-3">
-                          <button className="text-gray-400 hover:text-gray-600">
+                          <button 
+                            onClick={() => handleEditClick(item)}
+                            className="text-gray-400 hover:text-gray-600"
+                          >
                             <Edit size={16} />
                           </button>
                         </td>
@@ -340,6 +406,17 @@ const Dashboard = () => {
           )}
         </div>
       </div>
+
+      {/* Edit Modal */}
+      <EditModal 
+        isOpen={isModalOpen}
+        onClose={() => {
+          setIsModalOpen(false);
+          setCurrentEditItem(null);
+        }}
+        item={currentEditItem}
+        onSave={handleSaveEdit}
+      />
     </>
   );
 };
