@@ -1,9 +1,12 @@
 import React from 'react';
 import { MessageSquare } from 'lucide-react';
+import Breadcrumb from './Breadcrumb';
 
 const Messages = () => {
   return (
     <div className="p-6">
+      <Breadcrumb />
+      
       <h2 className="flex items-center mb-6 text-lg font-semibold">
         <span className="mr-2 p-1.5 bg-pink-100 rounded-md text-pink-500">
           <MessageSquare size={16} />

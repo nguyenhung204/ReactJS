@@ -2,12 +2,10 @@ import React, { Suspense, lazy } from 'react';
 import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
-// Layout Component
 import Layout from './components/Layout';
 import LoadingSpinner from './components/LoadingSpinner';
 import ErrorBoundary from './components/ErrorBoundary';
 
-// Lazy loaded page components for better performance
 const Dashboard = lazy(() => import('./components/Dashboard'));
 const Projects = lazy(() => import('./components/Projects'));
 const Teams = lazy(() => import('./components/Teams'));
@@ -28,7 +26,6 @@ function App() {
               <Route path="/analytics" element={<Analytics />} />
               <Route path="/messages" element={<Messages />} />
               <Route path="/integrations" element={<Integrations />} />
-              {/* Fallback route for any undefined paths */}
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </Suspense>

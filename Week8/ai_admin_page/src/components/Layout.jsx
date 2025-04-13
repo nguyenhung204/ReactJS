@@ -6,20 +6,13 @@ import {
   Users, 
   BarChart2, 
   MessageSquare, 
-  Settings,
-  ChevronLeft, 
-  ChevronRight,
-  Menu,
-  Search,
-  Bell,
-  HelpCircle
+  Code
 } from 'lucide-react';
 import logo from '../assets/logo.png';
 
 const Layout = ({ children }) => {
-  const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
-  const [pageTitle, setPageTitle] = useState('Dashboard');
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const location = useLocation();
 
   // Navigation menu items with routes
@@ -29,7 +22,7 @@ const Layout = ({ children }) => {
     { path: '/teams', name: 'Teams', icon: Users },
     { path: '/analytics', name: 'Analytics', icon: BarChart2 },
     { path: '/messages', name: 'Messages', icon: MessageSquare },
-    { path: '/integrations', name: 'Integrations', icon: Settings },
+    { path: '/integrations', name: 'Integrations', icon: Code },
   ];
 
   // Handle responsive sidebar
@@ -37,9 +30,7 @@ const Layout = ({ children }) => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
       if (window.innerWidth < 768) {
-        setIsSidebarOpen(false);
-      } else {
-        setIsSidebarOpen(true);
+        setMobileMenuOpen(false);
       }
     };
 
@@ -53,126 +44,66 @@ const Layout = ({ children }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
-  // Update the page title when the route changes
-  useEffect(() => {
-    const currentPage = navItems.find(item => item.path === location.pathname);
-    if (currentPage) {
-      setPageTitle(currentPage.name);
-      document.title = `${currentPage.name} | Admin Dashboard`;
-    } else {
-      setPageTitle('Dashboard');
-      document.title = 'Admin Dashboard';
-    }
-    
-    // Scroll to top when navigating to a new page
-    window.scrollTo(0, 0);
-  }, [location.pathname, navItems]);
-
-  const toggleSidebar = () => {
-    setIsSidebarOpen(!isSidebarOpen);
+  const toggleMobileMenu = () => {
+    setMobileMenuOpen(!mobileMenuOpen);
   };
 
   return (
-    <div className="flex h-screen bg-gray-50">
-      {/* Sidebar */}
-      <aside className={`${isSidebarOpen ? 'w-64' : 'w-20'} bg-white h-full shadow-md transition-all duration-300 fixed z-10`}>
-        {/* Logo section */}
-        <div className="p-4 flex items-center justify-between">
-          {isSidebarOpen ? (
-            <div className="flex items-center">
-              <img src={logo} alt="Logo" className="h-8 w-8 mr-2" />
-              <span className="text-xl font-bold text-pink-500">Logo</span>
-            </div>
-          ) : (
-            <img src={logo} alt="Logo" className="h-8 w-8 mx-auto" />
-          )}
-          <button onClick={toggleSidebar} className="text-gray-500 hover:text-gray-700 hidden md:block">
-            {isSidebarOpen ? <ChevronLeft size={20} /> : <ChevronRight size={20} />}
-          </button>
+    <div className="grid grid-cols-[220px_1fr] min-h-screen bg-white">
+      {/* Left Sidebar */}
+      <aside className="bg-white border-r border-gray-100">
+        {/* Logo */}
+        <div className="p-4 mb-6 pl-6">
+          <div className="flex items-center">
+            <img src={logo} alt="Logo" className="h-8" />
+            <span className="ml-2 text-lg font-bold">Logo</span>
+          </div>
         </div>
 
-        {/* Navigation */}
-        <nav className="mt-6">
+        {/* Navigation Menu */}
+        <nav className="px-2">
           {navItems.map((item) => (
             <NavLink
               key={item.path}
               to={item.path}
               end={item.path === '/'}
               className={({ isActive }) => `
-                mt-2 px-4 py-3 mx-3 rounded-md flex items-center cursor-pointer
+                flex items-center px-4 py-3 my-1 mx-2 rounded-md
                 ${isActive 
-                  ? `${isSidebarOpen ? 'bg-pink-500 text-white' : 'bg-pink-100 text-pink-500'}`
-                  : 'text-gray-600 hover:bg-pink-100 hover:text-pink-500'}
+                  ? 'bg-pink-500 text-white' 
+                  : 'text-gray-600 hover:bg-gray-50'}
               `}
             >
-              <item.icon size={20} />
-              {isSidebarOpen && <span className="ml-3 font-medium">{item.name}</span>}
+              <item.icon size={18} className="mr-3" />
+              <span className="font-medium">{item.name}</span>
             </NavLink>
           ))}
         </nav>
 
-        {/* Bottom section */}
-        {isSidebarOpen && (
-          <div className="absolute bottom-6 left-0 right-0 px-4">
-            <div className="bg-white p-4 rounded-lg flex flex-col items-center">
-              <img src="/src/assets/image.png" alt="Upgrade" className="h-24 mb-2" />
-              <p className="font-medium text-sm text-gray-700">V2.0 is available</p>
-              <button className="mt-2 w-full py-1.5 border border-gray-300 rounded-md text-sm text-gray-600 hover:bg-gray-50">
-                Try now
-              </button>
-            </div>
+        {/* Version Upgrade - Bottom Section */}
+        <div className="mt-auto p-4 absolute bottom-0 w-[220px]">
+          <div className="p-4 flex flex-col items-center">
+            <img 
+              src="/src/assets/image.png" 
+              alt="Version upgrade" 
+              className="w-28 h-28 mb-1" 
+            />
+            <p className="text-sm font-medium mb-1">V2.0 is available</p>
+            <button className="w-full py-2 border border-gray-300 rounded-md text-sm hover:bg-gray-50">
+              Try now
+            </button>
           </div>
-        )}
+        </div>
       </aside>
 
-      {/* Overlay for mobile when sidebar is open */}
-      {isMobile && isSidebarOpen && (
-        <div className="fixed inset-0 bg-black bg-opacity-50 z-0" onClick={toggleSidebar}></div>
-      )}
-
-      {/* Main Content */}
-      <main className={`flex-1 ${isSidebarOpen ? 'ml-64' : 'ml-20'} transition-all duration-300 flex flex-col min-h-screen`}>
-        {/* Header */}
-        <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-10">
-          <div className="flex items-center">
-            {isMobile && (
-              <button onClick={toggleSidebar} className="mr-4 text-gray-500">
-                <Menu size={24} />
-              </button>
-            )}
-            <h1 className="text-xl font-semibold text-pink-500">{pageTitle}</h1>
-          </div>
-          
-          <div className="flex items-center space-x-4">
-            <div className="relative hidden md:block">
-              <input
-                type="text"
-                placeholder="Search..."
-                className="pl-10 pr-4 py-2 border border-gray-200 rounded-md focus:outline-none focus:ring-1 focus:ring-pink-500"
-              />
-              <Search className="h-5 w-5 text-gray-400 absolute left-3 top-2.5" />
-            </div>
-            <button className="text-gray-600 hover:text-gray-800">
-              <Bell size={20} />
-            </button>
-            <button className="text-gray-600 hover:text-gray-800 hidden sm:block">
-              <HelpCircle size={20} />
-            </button>
-            <div className="h-9 w-9 rounded-full bg-pink-100 border-2 border-pink-500 flex items-center justify-center text-pink-500 font-medium">
-              C
-            </div>
-          </div>
-        </header>
-
+      {/* Main Content Area */}
+      <main className="overflow-auto">
+        {/* Header - Removed as per the new design */}
+        
         {/* Page Content */}
-        <div className="flex-grow overflow-auto">
+        <div className="p-5">
           {children}
         </div>
-
-        {/* Footer */}
-        <footer className="bg-white border-t py-4 px-6 text-center text-gray-500 text-sm mt-auto">
-          © 2025 Admin Dashboard. All rights reserved.
-        </footer>
       </main>
     </div>
   );

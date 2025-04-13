@@ -10,6 +10,7 @@ import {
   Download,
   Edit
 } from 'lucide-react';
+import Breadcrumb from './Breadcrumb';
 
 const Dashboard = () => {
   const [overviewData, setOverviewData] = useState([]);
@@ -93,6 +94,8 @@ const Dashboard = () => {
     <>
       {/* Content */}
       <div className="p-6">
+        <Breadcrumb />
+        
         {/* Overview Section */}
         <div className="mb-6">
           <h2 className="flex items-center mb-4 text-lg font-semibold">
