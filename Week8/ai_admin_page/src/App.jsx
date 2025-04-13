@@ -1,31 +1,39 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import React, { Suspense, lazy } from 'react';
+import { BrowserRouter as Router, Routes, Route, Navigate } from 'react-router-dom';
 import './App.css';
 
 // Layout Component
 import Layout from './components/Layout';
+import LoadingSpinner from './components/LoadingSpinner';
+import ErrorBoundary from './components/ErrorBoundary';
 
-// Page Components
-import Dashboard from './components/Dashboard';
-import Projects from './components/Projects';
-import Teams from './components/Teams';
-import Analytics from './components/Analytics';
-import Messages from './components/Messages';
-import Integrations from './components/Integrations';
+// Lazy loaded page components for better performance
+const Dashboard = lazy(() => import('./components/Dashboard'));
+const Projects = lazy(() => import('./components/Projects'));
+const Teams = lazy(() => import('./components/Teams'));
+const Analytics = lazy(() => import('./components/Analytics'));
+const Messages = lazy(() => import('./components/Messages'));
+const Integrations = lazy(() => import('./components/Integrations'));
 
 function App() {
   return (
     <Router>
-      <Layout>
-        <Routes>
-          <Route path="/" element={<Dashboard />} />
-          <Route path="/projects" element={<Projects />} />
-          <Route path="/teams" element={<Teams />} />
-          <Route path="/analytics" element={<Analytics />} />
-          <Route path="/messages" element={<Messages />} />
-          <Route path="/integrations" element={<Integrations />} />
-        </Routes>
-      </Layout>
+      <ErrorBoundary>
+        <Layout>
+          <Suspense fallback={<LoadingSpinner size="large" />}>
+            <Routes>
+              <Route path="/" element={<Dashboard />} />
+              <Route path="/projects" element={<Projects />} />
+              <Route path="/teams" element={<Teams />} />
+              <Route path="/analytics" element={<Analytics />} />
+              <Route path="/messages" element={<Messages />} />
+              <Route path="/integrations" element={<Integrations />} />
+              {/* Fallback route for any undefined paths */}
+              <Route path="*" element={<Navigate to="/" replace />} />
+            </Routes>
+          </Suspense>
+        </Layout>
+      </ErrorBoundary>
     </Router>
   );
 }

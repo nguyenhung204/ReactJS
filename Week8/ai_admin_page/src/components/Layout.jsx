@@ -19,8 +19,20 @@ import logo from '../assets/logo.png';
 const Layout = ({ children }) => {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [pageTitle, setPageTitle] = useState('Dashboard');
   const location = useLocation();
 
+  // Navigation menu items with routes
+  const navItems = [
+    { path: '/', name: 'Dashboard', icon: Home },
+    { path: '/projects', name: 'Projects', icon: FileText },
+    { path: '/teams', name: 'Teams', icon: Users },
+    { path: '/analytics', name: 'Analytics', icon: BarChart2 },
+    { path: '/messages', name: 'Messages', icon: MessageSquare },
+    { path: '/integrations', name: 'Integrations', icon: Settings },
+  ];
+
+  // Handle responsive sidebar
   useEffect(() => {
     const handleResize = () => {
       setIsMobile(window.innerWidth < 768);
@@ -41,19 +53,24 @@ const Layout = ({ children }) => {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Update the page title when the route changes
+  useEffect(() => {
+    const currentPage = navItems.find(item => item.path === location.pathname);
+    if (currentPage) {
+      setPageTitle(currentPage.name);
+      document.title = `${currentPage.name} | Admin Dashboard`;
+    } else {
+      setPageTitle('Dashboard');
+      document.title = 'Admin Dashboard';
+    }
+    
+    // Scroll to top when navigating to a new page
+    window.scrollTo(0, 0);
+  }, [location.pathname, navItems]);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
   };
-
-  // Navigation menu items with routes
-  const navItems = [
-    { path: '/', name: 'Dashboard', icon: Home },
-    { path: '/projects', name: 'Projects', icon: FileText },
-    { path: '/teams', name: 'Teams', icon: Users },
-    { path: '/analytics', name: 'Analytics', icon: BarChart2 },
-    { path: '/messages', name: 'Messages', icon: MessageSquare },
-    { path: '/integrations', name: 'Integrations', icon: Settings },
-  ];
 
   return (
     <div className="flex h-screen bg-gray-50">
@@ -114,18 +131,16 @@ const Layout = ({ children }) => {
       )}
 
       {/* Main Content */}
-      <main className={`flex-1 ${isSidebarOpen ? 'ml-64' : 'ml-20'} transition-all duration-300`}>
+      <main className={`flex-1 ${isSidebarOpen ? 'ml-64' : 'ml-20'} transition-all duration-300 flex flex-col min-h-screen`}>
         {/* Header */}
-        <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center">
+        <header className="bg-white shadow-sm py-4 px-6 flex justify-between items-center sticky top-0 z-10">
           <div className="flex items-center">
             {isMobile && (
               <button onClick={toggleSidebar} className="mr-4 text-gray-500">
                 <Menu size={24} />
               </button>
             )}
-            <h1 className="text-xl font-semibold text-pink-500">
-              {navItems.find(item => item.path === location.pathname)?.name || 'Dashboard'}
-            </h1>
+            <h1 className="text-xl font-semibold text-pink-500">{pageTitle}</h1>
           </div>
           
           <div className="flex items-center space-x-4">
@@ -150,7 +165,14 @@ const Layout = ({ children }) => {
         </header>
 
         {/* Page Content */}
-        {children}
+        <div className="flex-grow overflow-auto">
+          {children}
+        </div>
+
+        {/* Footer */}
+        <footer className="bg-white border-t py-4 px-6 text-center text-gray-500 text-sm mt-auto">
+          © 2025 Admin Dashboard. All rights reserved.
+        </footer>
       </main>
     </div>
   );
