@@ -3,6 +3,7 @@ import Navbar from "./components/Navbar"
 import RecipeVideos from "./components/RecipeVideos"
 import SummerRecipes from "./components/SummerRecipes"
 import EditorsPick from './components/EditorsPick';
+import Footer from "./components/Footer";
 
 
 function App() {
@@ -15,6 +16,7 @@ function App() {
         <RecipeVideos/>
         <EditorsPick/>
       </main>
+      <Footer />
     </div>
   )
 }
