@@ -12,6 +12,7 @@ import {
 } from 'lucide-react';
 import Breadcrumb from './Breadcrumb';
 import EditModal from './EditModal';
+import AddUserModal from './AddUserModal';
 
 const Dashboard = () => {
   const [overviewData, setOverviewData] = useState([]);
@@ -26,6 +27,14 @@ const Dashboard = () => {
   const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEditItem, setCurrentEditItem] = useState(null);
+  const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
+
+  // Handle successful user addition
+  const handleAddSuccess = (newUser) => {
+    // Add the new user to the table data
+    setTableData(prevData => [newUser, ...prevData]);
+    console.log("Added new user:", newUser);
+  };
 
   // Fetch overview data from API
   useEffect(() => {
@@ -239,7 +248,10 @@ const Dashboard = () => {
           <div className="flex justify-between items-center mb-6">
             <h2 className="text-lg font-semibold">Detailed report</h2>
             <div className="flex space-x-2">
-              <button className="px-3 py-1.5 flex items-center text-pink-500 border border-pink-500 rounded-md hover:bg-pink-50">
+              <button 
+                className="px-3 py-1.5 flex items-center text-pink-500 border border-pink-500 rounded-md hover:bg-pink-50"
+                onClick={() => setIsAddUserModalOpen(true)}
+              >
                 <UserPlus size={16} className="mr-1.5" />
                 <span>Add User</span>
               </button>
@@ -416,6 +428,13 @@ const Dashboard = () => {
         }}
         item={currentEditItem}
         onSave={handleSaveEdit}
+      />
+
+      {/* Add User Modal */}
+      <AddUserModal 
+        isOpen={isAddUserModalOpen}
+        onClose={() => setIsAddUserModalOpen(false)}
+        onAddSuccess={handleAddSuccess}
       />
     </>
   );
