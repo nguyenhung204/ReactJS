@@ -18,7 +18,10 @@ import {
   DollarSign,
   UserPlus,
   ArrowUp,
-  ArrowDown
+  ArrowDown,
+  Upload,
+  FileOutput,
+  Edit
 } from 'lucide-react'
 
 function App() {
@@ -97,6 +100,29 @@ function App() {
   // Parse the change value to number for comparison
   const parseChange = (changeStr) => {
     return changeStr ? parseFloat(changeStr) : 0;
+  };
+
+  // Sample data for the static table
+  const tableData = [
+    { id: 1, name: 'Elizabeth Lee', avatar: 'src/assets/person.png', company: 'AudioSystems', value: '$859', date: '10/07/2023', status: 'New' },
+    { id: 2, name: 'Carlos Garcia', avatar: 'src/assets/person.png', company: 'SmartSoft', value: '$547', date: '24/11/2023', status: 'New' },
+    { id: 3, name: 'Elizabeth Bailey', avatar: 'src/assets/person.png', company: 'Prime Time Telecom', value: '$864', date: '08/08/2023', status: 'In-progress' },
+    { id: 4, name: 'Ryan Brown', avatar: 'src/assets/person.png', company: 'OmniTech Corporation', value: '$641', date: '31/08/2023', status: 'In-progress' },
+    { id: 5, name: 'Ryan Young', avatar: 'src/assets/person.png', company: 'DataStream Inc.', value: '$769', date: '01/05/2023', status: 'Completed' },
+    { id: 6, name: 'Hailey Adams', avatar: 'src/assets/person.png', company: 'FlowTech', value: '$622', date: '15/06/2023', status: 'Completed' },
+  ];
+
+  const getStatusClass = (status) => {
+    switch(status) {
+      case 'New':
+        return 'bg-blue-100 text-blue-600';
+      case 'In-progress':
+        return 'bg-yellow-100 text-yellow-600';
+      case 'Completed':
+        return 'bg-green-100 text-green-600';
+      default:
+        return 'bg-gray-100 text-gray-600';
+    }
   };
 
   return (
@@ -261,23 +287,88 @@ function App() {
         </section>
 
         {/* Detail Report / Data Table */}
-        <section className="p-6 bg-white border-b">
-          <h2 className="text-xl font-semibold text-gray-800 mb-2">Detail Report</h2>
-          <p className="text-gray-500">Data table</p>
-          <div className="h-64 bg-gray-200 mt-2 rounded-md flex items-center justify-center">
-            {/* This will be replaced with actual table in Step 3 & 4 */}
-            <p className="text-gray-500">Data Table Will Go Here</p>
+        <section className="p-6 bg-white">
+          <div className="flex justify-between items-center mb-4">
+            <div>
+              <h2 className="text-xl font-semibold text-gray-800">Detailed report</h2>
+            </div>
+            <div className="flex space-x-2">
+              <button className="flex items-center px-3 py-1.5 border border-pink-500 text-pink-500 rounded-md hover:bg-pink-50">
+                <Upload className="w-4 h-4 mr-1" />
+                <span>Import</span>
+              </button>
+              <button className="flex items-center px-3 py-1.5 border border-gray-300 text-gray-600 rounded-md hover:bg-gray-50">
+                <FileOutput className="w-4 h-4 mr-1" />
+                <span>Export</span>
+              </button>
+            </div>
+          </div>
+          
+          {/* Table */}
+          <div className="overflow-x-auto rounded-lg">
+            <table className="min-w-full">
+              <thead>
+                <tr className="text-left text-gray-500 border-b">
+                  <th className="p-3 w-6">
+                    <input type="checkbox" className="rounded" />
+                  </th>
+                  <th className="p-3 text-sm font-medium">CUSTOMER NAME</th>
+                  <th className="p-3 text-sm font-medium">COMPANY</th>
+                  <th className="p-3 text-sm font-medium">ORDER VALUE</th>
+                  <th className="p-3 text-sm font-medium">ORDER DATE</th>
+                  <th className="p-3 text-sm font-medium">STATUS</th>
+                  <th className="p-3 w-6"></th>
+                </tr>
+              </thead>
+              <tbody className="divide-y divide-gray-100">
+                {tableData.map((row) => (
+                  <tr key={row.id} className="hover:bg-gray-50">
+                    <td className="p-3">
+                      <input type="checkbox" className="rounded" />
+                    </td>
+                    <td className="p-3 whitespace-nowrap">
+                      <div className="flex items-center">
+                        <img src={row.avatar} alt={row.name} className="w-8 h-8 rounded-full mr-3" />
+                        <span className="font-medium">{row.name}</span>
+                      </div>
+                    </td>
+                    <td className="p-3 whitespace-nowrap">{row.company}</td>
+                    <td className="p-3 whitespace-nowrap">{row.value}</td>
+                    <td className="p-3 whitespace-nowrap">{row.date}</td>
+                    <td className="p-3 whitespace-nowrap">
+                      <span className={`px-2 py-1 rounded-full text-xs font-medium ${getStatusClass(row.status)}`}>
+                        {row.status}
+                      </span>
+                    </td>
+                    <td className="p-3">
+                      <button className="text-gray-400 hover:text-gray-600">
+                        <Edit className="w-4 h-4" />
+                      </button>
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+
+          {/* Pagination */}
+          <div className="flex justify-between items-center mt-4 pt-4 border-t">
+            <p className="text-sm text-gray-500">68 results</p>
+            <div className="flex space-x-1">
+              <span className="px-3 py-1 bg-pink-500 text-white rounded-md">1</span>
+              <span className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-md cursor-pointer">2</span>
+              <span className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-md cursor-pointer">3</span>
+              <span className="px-3 py-1 text-gray-600">...</span>
+              <span className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-md cursor-pointer">10</span>
+              <span className="px-3 py-1 text-gray-600 hover:bg-gray-100 rounded-md cursor-pointer">⟩</span>
+            </div>
           </div>
         </section>
 
-        {/* Pagination */}
+        {/* Footer with pagination is now part of the table section */}
         <footer className="p-6 bg-white border-t mt-auto">
           <div className="flex justify-between items-center">
-            <p className="text-gray-500">Pagination</p>
-            <div className="space-x-2">
-              <button className="px-4 py-2 border border-gray-300 rounded-md">Previous</button>
-              <button className="px-4 py-2 bg-pink-500 text-white rounded-md">Next</button>
-            </div>
+            <p className="text-sm text-gray-500">© 2025 Your Company</p>
           </div>
         </footer>
       </div>
