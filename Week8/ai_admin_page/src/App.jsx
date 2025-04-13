@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react'
 import './App.css'
 import logo from './assets/logo.png'
-// Import Lucide icons
 import { 
   Home, 
   FileText, 
@@ -14,12 +13,20 @@ import {
   Menu, 
   Search, 
   Bell, 
-  HelpCircle 
+  HelpCircle,
+  TrendingUp,
+  DollarSign,
+  UserPlus,
+  ArrowUp,
+  ArrowDown
 } from 'lucide-react'
 
 function App() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true);
   const [isMobile, setIsMobile] = useState(false);
+  const [overviewData, setOverviewData] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
   useEffect(() => {
     const handleResize = () => {
@@ -41,8 +48,55 @@ function App() {
     return () => window.removeEventListener('resize', handleResize);
   }, []);
 
+  // Fetch overview data from API
+  useEffect(() => {
+    const fetchOverviewData = async () => {
+      try {
+        setLoading(true);
+        const response = await fetch('https://671891927fc4c5ff8f49fcac.mockapi.io/test');
+        if (!response.ok) {
+          throw new Error(`API request failed with status ${response.status}`);
+        }
+        const data = await response.json();
+        setOverviewData(data);
+        setLoading(false);
+        console.log("API Data:", data); // Log data for debugging
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+        console.error("API Error:", err);
+      }
+    };
+
+    fetchOverviewData();
+  }, []);
+
   const toggleSidebar = () => {
     setIsSidebarOpen(!isSidebarOpen);
+  };
+
+  // Helper function to get a specific card by title
+  const getCardByTitle = (title) => {
+    return overviewData.find(card => card.title === title) || {};
+  };
+
+  // Get icon by card title
+  const getIconByTitle = (title) => {
+    switch(title) {
+      case 'Turnover':
+        return { icon: TrendingUp, bgColor: 'bg-pink-100', textColor: 'text-pink-500' };
+      case 'Profit':
+        return { icon: DollarSign, bgColor: 'bg-green-100', textColor: 'text-green-500' };
+      case 'New Customers':
+        return { icon: UserPlus, bgColor: 'bg-blue-100', textColor: 'text-blue-500' };
+      default:
+        return { icon: TrendingUp, bgColor: 'bg-gray-100', textColor: 'text-gray-500' };
+    }
+  };
+
+  // Parse the change value to number for comparison
+  const parseChange = (changeStr) => {
+    return changeStr ? parseFloat(changeStr) : 0;
   };
 
   return (
@@ -157,11 +211,53 @@ function App() {
         {/* Overview */}
         <section className="p-6 bg-white border-b">
           <h2 className="text-xl font-semibold text-gray-800 mb-2">Overview</h2>
-          <p className="text-gray-500">Total Tags</p>
-          <div className="h-24 bg-gray-200 mt-2 rounded-md flex items-center justify-center">
-            {/* This will be replaced with actual overview content in Step 2 */}
-            <p className="text-gray-500">Overview Content Will Go Here</p>
-          </div>
+          <p className="text-gray-500 mb-4">Total Tags</p>
+          
+          {loading ? (
+            <div className="flex justify-center items-center h-24">
+              <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-pink-500"></div>
+            </div>
+          ) : error ? (
+            <div className="bg-red-100 text-red-700 p-3 rounded-md">
+              Error loading overview data: {error}
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {overviewData.map(card => {
+                const { icon: Icon, bgColor, textColor } = getIconByTitle(card.title);
+                const change = parseChange(card.change);
+                
+                return (
+                  <div key={card.id} className="bg-white p-5 rounded-lg shadow-sm border border-gray-100">
+                    <div className="flex justify-between items-start">
+                      <div>
+                        <p className="text-sm text-gray-500 mb-1">{card.title}</p>
+                        <h3 className="text-2xl font-bold">{card.value}</h3>
+                        
+                        <div className="flex items-center mt-2">
+                          {change >= 0 ? (
+                            <span className="text-green-500 text-sm flex items-center">
+                              <ArrowUp size={14} className="mr-1" />
+                              {Math.abs(change).toFixed(2)}%
+                            </span>
+                          ) : (
+                            <span className="text-red-500 text-sm flex items-center">
+                              <ArrowDown size={14} className="mr-1" />
+                              {Math.abs(change).toFixed(2)}%
+                            </span>
+                          )}
+                          <span className="text-xs text-gray-400 ml-2">vs last month</span>
+                        </div>
+                      </div>
+                      <div className={`${bgColor} p-3 rounded-full`}>
+                        <Icon className={`h-5 w-5 ${textColor}`} />
+                      </div>
+                    </div>
+                  </div>
+                );
+              })}
+            </div>
+          )}
         </section>
 
         {/* Detail Report / Data Table */}
