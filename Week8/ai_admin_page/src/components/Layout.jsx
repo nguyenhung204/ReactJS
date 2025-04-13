@@ -56,7 +56,6 @@ const Layout = ({ children }) => {
         <div className="p-4 mb-6 pl-6">
           <div className="flex items-center">
             <img src={logo} alt="Logo" className="h-8" />
-            <span className="ml-2 text-lg font-bold">Logo</span>
           </div>
         </div>
 

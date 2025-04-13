@@ -24,7 +24,6 @@ const Dashboard = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [itemsPerPage] = useState(5);
   const [selectedRows, setSelectedRows] = useState([]);
-  const [selectAllChecked, setSelectAllChecked] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [currentEditItem, setCurrentEditItem] = useState(null);
   const [isAddUserModalOpen, setIsAddUserModalOpen] = useState(false);
