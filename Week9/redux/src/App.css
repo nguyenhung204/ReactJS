@@ -85,11 +85,10 @@ body {
   display: flex;
   flex-direction: column;
   gap: 2rem;
-  max-width: 800px;
+  width: 100%;
   margin: 0 auto;
 }
 
-/* Common component styles */
 .feature-section {
   padding: 1.5rem;
   border-radius: var(--border-radius);
@@ -146,7 +145,6 @@ input {
   border-color: #555;
 }
 
-/* Counter feature styles */
 .counter {
   text-align: center;
 }
@@ -157,7 +155,6 @@ input {
   gap: 1rem;
 }
 
-/* Todo list styles */
 .todo-list {
   list-style: none;
   padding: 0;
@@ -192,12 +189,11 @@ input {
   background-color: var(--accent-color);
 }
 
-/* Theme toggle styles */
+
 .theme-toggle {
   text-align: center;
 }
 
-/* Shopping cart styles */
 .add-product {
   display: flex;
   gap: 0.5rem;
